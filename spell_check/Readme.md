@@ -5,22 +5,30 @@ Write a program that reads a large list of English words (e.g. from /usr/share/d
 Your solution should be faster than O(n) per word checked, where n is the length of the dictionary. That is to say, you can't scan the dictionary every time you want to spellcheck a word.
 
 For example:
- > sheeeeep
- sheep
- > peepple
- people
- > sheeple
- NO SUGGESTION
+> > sheeeeep
+>
+> sheep
+>
+> > peepple
+>
+> people
+>
+> > sheeple
+>
+> NO SUGGESTION
 
 The class of spelling mistakes to be corrected is as follows:
 
 Case (upper/lower) errors:
+
  "inSIDE" => "inside"
 
 Repeated letters:
+
  "jjoobbb" => "job"
 
 Incorrect vowels:
+
  "weke" => "wake"
 
 In addition, any combination of the above types of error in a single word should be corrected (e.g. "CUNsperrICY" => "conspiracy").
@@ -33,7 +41,7 @@ Final step: Write a second program that generates words with spelling mistakes o
 
 All words loaded from dictionary are first transformed into patterns (such
 `p**pl*` for people), and then stored into a hash table(dict).Since multiple
-words may mapped into the same pattern, *`defaultdict`* is used to store the words with identical patterns in a list. 
+words may mapped into the same pattern, **`defaultdict`** is used to store the words with identical patterns in a list. 
 
 Given a (mis-spelled) word, it will also be transformed into a pattern, then
 search the pattern in the hash table. Since mis-spelled consequtive vowels
@@ -45,7 +53,7 @@ distance is used to calculate the distance between a candidate word and the
 given (mis-spelled) word. In order to guaranttee the suggestions are
 reasonable, a English word frequency(stored in a hash table, please refer to http://en.wiktionary.org/wiki/Wiktionary:Frequency_lists#English) is adopted to choose the more popular candidate by default.
 
-Time complexity: O(n*m) for loading dictionary and `O(1 + m)` for word
+Time complexity: `O(n*m)` for loading dictionary and `O(1 + m)` for word
 checking, where `n` is the number of entries in the dictionary, and m is the
 number of characters in the string. Finding a word in hash table usually takes
 constant time `O(1)`, and word operations costs `O(m)`.
