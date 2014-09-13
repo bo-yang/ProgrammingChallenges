@@ -1,6 +1,6 @@
 ## Problem
 
-An example triangle of numbers is:
+An example of triangle numbers is:
 
 	      1
 	     / \
@@ -28,8 +28,8 @@ where `OPT(i,j)` is the lowest sum of number `tnum[i][j]`. Above function can be
 
 Given a triangle number with n lines, then:
 
- - Time complexity for finding the lowest sum of numbers: \\( O(n^2) \\).
- - Time complexity for finding the shortest path: \\( O(n) \\).
+ - Time complexity for finding the lowest sum of numbers: `O(n^2)`.
+ - Time complexity for finding the shortest path: `O(n)`.
 
 To build the executable file, please use command
 
