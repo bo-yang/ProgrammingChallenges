@@ -1,0 +1,112 @@
+#!/usr/bin/python
+
+"""
+Problem:
+Mary has 50 coins, and total to be $1. If a coin is drawn from the set,
+what is the probability of drawing a Quarter?
+
+Solution:
+Let 
+     Xn - has n quarters
+     Y - got a quarter
+Then the problem of getting a quarter should be P(Y) = sum(n/50 * P(Xn)), 
+where
+     P(Xn) = (# n quarters) / (# no quarters + # has quarters);
+     and n = 0 to 4
+
+The number of has/no quarters can be viewed as a three sum problem, i.e. a + 5b + 10c = N,
+where a, b, c are the number of one cent, five cents and one dime respectively, and N 
+can be 100(no quarters), 75(one quarter), 50(two quarters), 25(three quarters) and 
+0(four quarters). Besides, the constraints to the three sum problem are:
+     1. a + b + c = 50 - m, m = 0, 1, 2, 3, 4;
+     2. 0 <= c <= b <= a < 50.
+"""
+
+import os
+
+""" Determine if inputs are not unique
+"""
+def is_unique(a, b, c):
+    if (a != b) and (a != c) and (b != c):
+        return True
+    else:
+        return False
+
+""" Find all possible triplets
+Inputs:
+    data - a list of tuples: (coin_denominations, values)
+    s - specified sum of triplets
+    m - total number of coins
+Outputs:
+    tri - # of list of triplets
+"""
+def three_sum(data, s, m):
+    tri = [] 
+    data.sort(key=lambda tup: tup[1]); # sort by value
+    for i in range(0,len(data)-3):
+        a = data[i];
+        start = i + 1;
+        end = len(data) - 1;
+        while start < end :
+            b = data[start];
+            c = data[end];
+            if a[1] + b[1] + c[1] == s:
+                if is_unique(a[0], b[0], c[0]) and \
+                        (a[1]/a[0] + b[1]/b[0] + c[1]/c[0] == m):
+                    print "[%s, %s, %s], target=%d, #coins=%d" \
+                            %(a, b, c, m, a[1]/a[0] + b[1]/b[0] + c[1]/c[0]) # FIXME: TEST ONLY
+                    tri.append((a[1],b[1],c[1]))
+                start += 1
+                end -= 1
+            elif a[1] + b[1] + c[1] > s:
+                end -= 1
+            else:
+                start += 1
+    return len(tri)
+
+""" Generate possible values with given coin denominations
+Inputs:
+    denom - list of coin denominations
+    s - specified sum of triplets
+    m - total number of coins
+Outputs:
+    data - a list of tuples: (coin_denominations, values)
+"""
+def generate_data(denom, s, m):
+    data = [] 
+    for d in denom:
+        for i in range(1, m+1):
+            if d*i <= s:
+                data.append((d, d*i))
+            else:
+                break
+    return data
+
+""" Calculate probability
+"""
+def calc_prob_one_quarter():
+    denom = [1, 5, 10] # coin denominations
+    s = 100     # 1 dollar
+    m = 50      # total 50 coins
+    quarter = 25
+    num_total = 0 # possible number of four quarters is 0 
+    num_of_quarters = [] # number of no/one/two/three quarters
+    for i in range(0, s/quarter+1):
+        data = generate_data(denom, s-i*quarter, m-i)
+        num = three_sum(data, s-i*quarter, m-i)
+        num_of_quarters.append(num)
+        num_total += num
+    num_no_quarter = num_of_quarters[0]
+    num_has_quarter = num_total - num_no_quarter
+
+    prob_got_quarter = 0
+    print "# no quarter: %d" % num_no_quarter
+    for i in range(1, s/quarter+1):
+        print "# %d quarter: %d" % (i, num_of_quarters[i])
+        if num_total != 0:
+            prob_got_quarter += i/float(m) * num_of_quarters[i]/float(num_total)
+            
+    print "Probability of drawing one quarter: %.4f" %prob_got_quarter
+
+if  __name__ =='__main__':
+    calc_prob_one_quarter()
