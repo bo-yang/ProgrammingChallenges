@@ -58,3 +58,4 @@ checking, where `n` is the number of entries in the dictionary, and m is the
 number of characters in the string. Finding a word in hash table usually takes
 constant time `O(1)`, and word operations costs `O(m)`.
 
+For details, please refer to [Spell Checker](http://www.bo-yang.net/2014/09/13/spell-checker) on [my blog](http://bo-yang.github.io).
