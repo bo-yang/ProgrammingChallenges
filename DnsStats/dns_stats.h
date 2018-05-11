@@ -40,7 +40,7 @@ Rank Domain
 
 struct SiteDnsStats {
 	std::string domain; 	// domain name
-    uint32_t total_queries; // Number of queries made so far
+	uint32_t total_queries; // Number of queries made so far
 	double avg_query_time; 	// Average query time
 	double sd_query_time;  // Standard deviation of query times
 	time_t tm_first_query; 	// Timestamp of the first query made
@@ -68,19 +68,19 @@ public:
         DB_TABLE_QUERY,
     } table_type_t;
 
-	DNSQuerier(const DBConfig& dbcfg, uint32_t interval=5, bool debug=false) : _interval(interval),
+    DNSQuerier(const DBConfig& dbcfg, uint32_t interval=5, bool debug=false) : _interval(interval),
                  _debug(debug), _dbcfg(dbcfg) {
         _tblmap[DB_TABLE_STATS] = "dns_stats";
         _tblmap[DB_TABLE_QUERY] = "dns_queries";
-		srand(time(NULL)); /* initialize random seed */
+        srand(time(NULL)); /* initialize random seed */
         connect_db();
-	}
-	~DNSQuerier() {
-		if (_conn.connected())
+    }
+    ~DNSQuerier() {
+        if (_conn.connected())
             _conn.disconnect();
-	}
+    }
 
-	bool dns_query(SiteDnsStats &site);
+    bool dns_query(SiteDnsStats &site);
     bool create_table(table_type_t type);
     bool retrieve_stats(SiteDnsStats &site);
 
@@ -91,13 +91,13 @@ protected:
     mysqlpp::StoreQueryResult db_query(SiteDnsStats &site, table_type_t type);
 
 private:
-	uint32_t _interval; // in seconds
+    uint32_t _interval; // in seconds
     bool _debug;
     DBConfig _dbcfg;
     mysqlpp::Connection _conn;
     std::unordered_map<int, std::string> _tblmap;
 
-	std::string random_prefix();
+    std::string random_prefix();
 };
 
 #endif // _TOP_SITES_H_
